@@ -1,0 +1,40 @@
+<!--
+  Generated template for the OptionPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>{{"Option"|translate}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-fab right bottom ion-fixed >
+    <button color="primary" ion-fab (click)="addOption()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+  <ion-list>
+    <ion-list-header color="light">{{"Option"|translate}}</ion-list-header>
+    <ion-item *ngFor="let option of newOptions">
+      <!-- <div item-start>
+          <ion-input type="text" [(ngModel)]="option.name"></ion-input>
+      </div>
+      <h2>Test</h2> -->
+      <ion-input type="text" [(ngModel)]="option.name" placeholder="{{'OptionName'|translate}}"></ion-input>
+      <button ion-button outline item-end (click)="saveOption(option)">{{"Save"|translate}}</button>
+    </ion-item>
+    <ion-item *ngFor="let option of brickData.options$ | async">
+      <!-- <div item-start>
+          <ion-input type="text" [(ngModel)]="option.name"></ion-input>
+      </div>
+      <h2>Test</h2> -->
+      {{option.name}}
+      <button ion-button outline item-end (click)="deleteOption(option.id)">{{"Delete"|translate}}</button>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

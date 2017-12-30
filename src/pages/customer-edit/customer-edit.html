@@ -1,0 +1,36 @@
+<!--
+  Generated template for the CustomerEditPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>{{ "CustomerInfo" | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <form [formGroup]="customer" novalidate (ngSubmit)="save(customer.value, customer.valid)">
+      <ion-item>
+        <ion-label floating>{{ "CompanyName" | translate }}</ion-label>
+        <ion-input type="text" formControlName="name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>{{ "CompanyPhone" | translate }}</ion-label>
+        <ion-input type="text" formControlName="phone"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>{{ "CompanyNotes" | translate }}</ion-label>
+        <ion-input type="text" formControlName="notes"></ion-input>
+      </ion-item>
+
+      <button ion-button block type="submit" [disabled]="!customer.valid">Save</button>
+    </form>
+
+</ion-content>

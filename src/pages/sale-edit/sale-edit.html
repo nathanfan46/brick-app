@@ -1,0 +1,53 @@
+<!--
+  Generated template for the SaleEditPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>{{"SaleEdit" | translate}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <form [formGroup]="sale" novalidate (ngSubmit)="save(sale.value, sale.valid)">
+    <ion-item>
+      <ion-label floating>{{"SaleCustomer"|translate}}</ion-label>
+      <ion-select formControlName="customerid" multiple="false">
+        <ion-option *ngFor="let customer of brickData.customers$ | async"  [value]="customer.id">{{customer.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>{{"SaleDate"|translate}}</ion-label>
+      <ion-datetime displayFormat="MM/DD, YYYY" formControlName="date"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>{{"SaleAddress"|translate}}</ion-label>
+      <ion-input type="text" formControlName="address"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>{{"SaleUnitprice"|translate}}</ion-label>
+      <ion-input type="number" formControlName="unitprice"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>{{"SaleQuantity"|translate}}</ion-label>
+      <ion-input type="number" formControlName="quantity"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>{{"SaleAmount"|translate}}</ion-label>
+      <ion-input type="number" formControlName="amount"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>{{"SaleOptions"|translate}}</ion-label>
+      <ion-select formControlName="options" multiple="true">
+        <ion-option *ngFor="let option of brickData.options$ | async"  [value]="option.name">{{option.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <button ion-button block type="submit" [disabled]="!sale.valid">Save</button>
+  </form>
+</ion-content>

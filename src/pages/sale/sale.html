@@ -1,0 +1,59 @@
+<!--
+  Generated template for the SalePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>{{"Sale"|translate}}</ion-title>
+  </ion-navbar>
+  <ion-toolbar color="primary">
+    <ion-segment [(ngModel)]="category" color="light">
+      <ion-segment-button value="by_month">
+        {{"By_Month"|translate}}
+      </ion-segment-button>
+      <ion-segment-button value="by_company">
+        {{"By_Company"|translate}}
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-fab right bottom ion-fixed >
+    <button color="primary" ion-fab (click)="addSale()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+  <div [ngSwitch]="category">
+    <div *ngSwitchCase="'by_month'">
+      <ion-list *ngFor="let record of month_sales$ | async; trackBy: trackByFn">
+        <ion-list-header color="light">{{ record.month }}</ion-list-header>
+        <ion-item *ngFor="let sale of record.sales">
+          <div item-start>
+            {{ (sale.customer$ | async)?.name }}
+          </div>
+          <h2>NT$ {{sale.amount}}</h2>
+          <small>{{sale.address}}</small>
+          <button ion-button outline item-end (click)="updateSale(sale.id)">{{"Edit"|translate}}</button>
+        </ion-item>
+      </ion-list>
+    </div>
+    <div *ngSwitchCase="'by_company'">
+      <ion-list *ngFor="let record of customer_sales$ | async; trackBy: trackByFn">
+        <ion-list-header color="light">{{ (record.customer$ | async)?.name }}</ion-list-header>
+        <ion-item *ngFor="let sale of record.sales">
+          <div item-start>
+            {{formatdate(sale.date)}}
+          </div>
+          <h2>NT$ {{sale.amount}}</h2>
+          <small>{{sale.address}}</small>
+          <button ion-button outline item-end (click)="updateSale(sale.id)">{{"Edit"|translate}}</button>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+
+</ion-content>
