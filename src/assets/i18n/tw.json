@@ -13,6 +13,7 @@
     "Sale" : "出貨清單",
     "SaleCustomer" : "客戶",
     "SaleDate" : "出貨日期",
+    "InvoiceDate" : "收款日期",
     "SaleAddress" : "出貨地址",
     "SaleUnitprice" : "單價",
     "SaleQuantity" : "數量",

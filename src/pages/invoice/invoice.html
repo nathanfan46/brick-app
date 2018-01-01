@@ -14,7 +14,11 @@
 
 
 <ion-content padding>
-  <ion-list *ngFor="let record of invoices$ | async; trackBy: trackByFn">
+  <ion-searchbar
+    [(ngModel)]="searchText"
+    [showCancelButton]="true">
+  </ion-searchbar>
+  <ion-list *ngFor="let record of invoices$ | async | SaleSearchPipe: searchText; trackBy: trackByFn">
     <ion-list-header color="light" *ngIf="record.customer$ | async as customer">{{ customer.name }}</ion-list-header>
     <ion-list-header color="light" *ngIf="record.customer">{{ record.customer.name }}</ion-list-header>
     <ion-item *ngFor="let invoice of record.invoices">

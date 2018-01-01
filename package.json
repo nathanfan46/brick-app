@@ -31,6 +31,7 @@
     "@types/moment-timezone": "^0.5.3",
     "angularfire2": "^5.0.0-rc.4",
     "cordova-android": "6.3.0",
+    "cordova-ios": "4.5.4",
     "cordova-pdf-generator": "^1.9.3",
     "cordova-plugin-device": "^1.1.4",
     "cordova-plugin-ionic-webview": "^1.1.16",
@@ -63,7 +64,8 @@
       "cordova-plugin-statusbar": {}
     },
     "platforms": [
-      "android"
+      "android",
+      "ios"
     ]
   }
 }

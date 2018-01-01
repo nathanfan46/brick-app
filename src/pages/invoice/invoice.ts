@@ -21,6 +21,7 @@ declare var cordova:any;
 })
 export class InvoicePage {
   public invoices$: Observable<any>;
+  public searchText: string;
 
   constructor(
     public navCtrl: NavController, public navParams: NavParams,
@@ -51,6 +52,13 @@ export class InvoicePage {
         bulk_sales.forEach(sale => {
           let year = sale.date.getFullYear();
           let month = sale.date.getMonth()+1;
+
+          if(sale.invoicedate) {
+            console.log(sale.invoicedate);
+            year = sale.invoicedate.getFullYear();
+            month = sale.invoicedate.getMonth()+1;
+          }
+
           let bulk_key = year + '-' + month;
           if(!bulk_dict[bulk_key]) {
             bulk_dict[bulk_key] = [];
@@ -62,9 +70,16 @@ export class InvoicePage {
         let bulk_invoices = [];
         for(let bulk_key in bulk_dict) {
           let sales = bulk_dict[bulk_key];
-          let amount = sales.reduce((sum, sale) => sum + sale.amount, 0);
-          console.log(sales);
-          console.log(amount);
+          let amount = sales.reduce((sum, sale) =>  parseFloat(sum) + parseFloat(sale.amount), 0);
+          // console.log(sales);
+          // console.log(amount);
+          sales = sales.sort((a,b) => {
+            if(b.date.getTime() == a.date.getTime() && b.creaetdate && a.creaetdate) {
+              return a.creaetdate.getTime() - b.creaetdate.getTime();
+            } else {
+              return a.date.getTime() - b.date.getTime();
+            }
+          });
           bulk_invoices.push({month: bulk_key, sales: sales, amount: amount});
         }
 
@@ -76,7 +91,7 @@ export class InvoicePage {
         let monthly_invoices = invoice_dict[key].invoices;
         // let customer$ = this.brickData.getCustomer$(key);
         let customer = customer_dict[key];
-        invoices.push({ customer: customer, invoices: monthly_invoices});
+        invoices.push({ customer: customer, customername: customer.name, invoices: monthly_invoices});
 
       }
       console.log(invoices);
@@ -147,16 +162,34 @@ export class InvoicePage {
               vertical-align: top;
           }
 
+          .invoice-box table tr td:nth-child(1) {
+              text-align: left;
+              width: 20%;
+          }
+
+          .invoice-box table tr td:nth-child(2) {
+              text-align: left;
+              width: 35%;
+          }
+
+          .invoice-box table tr td:nth-child(3) {
+              text-align: left;
+              width: 15%;
+          }
+
           .invoice-box table tr td:nth-child(4) {
               text-align: right;
+              width: 10%;
           }
 
           .invoice-box table tr td:nth-child(5) {
               text-align: right;
+              width: 10%;
           }
           
           .invoice-box table tr td:nth-child(6) {
               text-align: right;
+              width: 10%;
           }
           
           .invoice-box table tr.top table td {
@@ -242,7 +275,7 @@ export class InvoicePage {
                           <table>
                               <tr>
                                   <td class="title">
-                                      收據
+                                      收款清單
                                   </td>
                                   <td>
                                       月份: ${invoice.month}<br>
@@ -259,8 +292,9 @@ export class InvoicePage {
                               <tr>
                                   <td>
                                       陳學全<br>
-                                      新北市中和區圓通路295-6號15F<br>
-                                      09xx-xxx-xxx
+                                      (02)2242-0824<br>
+                                      (02)2242-0825<br>
+                                      0926-372-587
                                   </td>
                                   <td>
                                       ${customer.name}<br>
@@ -286,11 +320,11 @@ export class InvoicePage {
                       </td>
 
                       <td>
-                          單價
+                          數量
                       </td>
 
                       <td>
-                          數量
+                          單價
                       </td>
                       
                       <td>
@@ -313,11 +347,11 @@ export class InvoicePage {
                       </td>
 
                       <td>
-                          ${sale.unitprice}
+                          ${sale.quantity}
                       </td>
 
                       <td>
-                          ${sale.quantity}
+                          ${sale.unitprice}
                       </td>
                       
                       <td>

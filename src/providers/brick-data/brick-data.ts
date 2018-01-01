@@ -6,9 +6,11 @@ import { Observable } from 'rxjs';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/shareReplay';
 import 'rxjs/add/operator/combineLatest';
+import 'rxjs/add/operator/withLatestFrom';
+import * as firebase from 'firebase';
 
 export interface Customer{ id: string, name: string, phone: string, notes: string };
-export interface Sale{ id: string, customerid: string, date: any, address: string, unitprice: number, quantity: number, amount: number, options: string };
+export interface Sale{ id: string, customerid: string, date: any, invoicedate: any, creaetdate: any, address: string, unitprice: number, quantity: number, amount: number, options: string };
 export interface Option{ id: string, name: string };
 /*
   Generated class for the BrickDataProvider provider.
@@ -49,7 +51,7 @@ export class BrickDataProvider {
   // }
 
   getCustomer$(docId: string) {
-    console.log(docId);
+    // console.log(docId);
     const customerDoc = this.afs.doc<Customer>(`customers/${docId}`);
     const customer$: Observable<Customer> = customerDoc.valueChanges();
 
@@ -79,6 +81,8 @@ export class BrickDataProvider {
   addSale(sale: Sale) {
     const id = this.afs.createId();
     sale.id = id;
+    const createdate = firebase.firestore.FieldValue.serverTimestamp();
+    sale.creaetdate = createdate;
     // this.customersCollection.add(customer);
     this.salesCollection.doc(id).set(sale);
   }

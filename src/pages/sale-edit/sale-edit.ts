@@ -33,22 +33,30 @@ export class SaleEditPage {
   ngOnInit() {
     this.sale = this.formBuilder.group({
       customerid: ['', [<any>Validators.required]],
-      date: ['', [<any>Validators.required]],
+      date: [null, [<any>Validators.required]],
+      invoicedate: null,
+      createdate: null,
       address: ['', [<any>Validators.required]],
-      unitprice: ['', [<any>Validators.required]],
-      quantity: ['', [<any>Validators.required]],
-      amount: ['', [<any>Validators.required]],
+      unitprice: [null, [<any>Validators.required]],
+      quantity: [null, [<any>Validators.required]],
+      amount: [null, [<any>Validators.required]],
       options: ''
     });
 
+    this.sale.controls.date.valueChanges.subscribe(date => {
+      if(this.sale.controls.invoicedate.value == null) {
+        this.sale.controls.invoicedate.setValue(date);
+      }
+    })
+
     this.sale.controls.unitprice.valueChanges.subscribe(unitprice => {
       let amount = unitprice * this.sale.controls.quantity.value;
-      this.sale.controls.amount.setValue(amount);
+      this.sale.controls.amount.setValue(amount.toFixed(0));
     })
 
     this.sale.controls.quantity.valueChanges.subscribe(quantity => {
       let amount = quantity * this.sale.controls.unitprice.value;
-      this.sale.controls.amount.setValue(amount);
+      this.sale.controls.amount.setValue(amount.toFixed(0));
     })
 
     if(this.docId) {
@@ -56,6 +64,9 @@ export class SaleEditPage {
       sale$.take(1).subscribe(sale => {
         console.log(sale);
         sale.date = moment(sale.date).format('YYYY-MM-DD');
+        if(sale.invoicedate) {
+          sale.invoicedate = moment(sale.invoicedate).format('YYYY-MM-DD');
+        }
         this.sale.patchValue(sale);
       })
     }
@@ -68,6 +79,10 @@ export class SaleEditPage {
   save(model: Sale, isValid: boolean) {
     // console.log(model, isValid);
     model.date = new Date(model.date);
+    if(model.invoicedate) {
+      model.invoicedate = new Date(model.invoicedate);
+    }
+
     console.log(model.date);
 
     if(this.docId) {
